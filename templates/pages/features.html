@@ -1,0 +1,144 @@
+{% extends "detail_base.html" %}
+
+{% block content %}
+<section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Input dictionary</span>
+                    <h1>Lead Classification Features and Attributes</h1>
+                    <p>
+                        This page expands the old feature popup into a full reference sheet so the scoring
+                        inputs, field types, and default pipeline assumptions are easier to review.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/model-analytics">See model performance</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Scoring inputs</h3>
+                    <div class="hero-card-value">25</div>
+                    <p class="hero-card-copy">
+                        The prediction payload combines user-entered lead signals with locked defaults that preserve
+                        the same schema used during model training.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="panel">
+                <div class="panel-title">
+                    <h2>Primary feature table</h2>
+                    <span class="chip">Live scoring schema</span>
+                </div>
+                <p class="muted">
+                    The dashboard exposes the fields below directly, while the remaining pipeline attributes are filled
+                    in automatically to keep the request structure consistent.
+                </p>
+                <div class="table-wrap" style="margin-top:20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Attribute name</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="mono">vehicle_segment</td>
+                                <td>categorical</td>
+                                <td>Vehicle class focus such as crossover, sedan, pickup, or EV-oriented segments.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">shopper_intent_decile</td>
+                                <td>numeric</td>
+                                <td>Intent band from 1 to 10. Higher values indicate stronger active shopping behavior.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">powertrain_focus</td>
+                                <td>categorical</td>
+                                <td>Primary propulsion preference such as ICE, hybrid, PHEV, or BEV.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">days_since_last_brand_engagement</td>
+                                <td>numeric</td>
+                                <td>Recency of the latest digital or dealer interaction with the brand.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">intent_engagement_score</td>
+                                <td>numeric</td>
+                                <td>Composite engagement score representing lead quality across multiple touchpoints.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">market_region_tier</td>
+                                <td>categorical</td>
+                                <td>Market context such as major metro, suburban, or smaller regional zones.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">competitive_conquest_intensity_band</td>
+                                <td>categorical</td>
+                                <td>Competitive market pressure faced by the targeted nameplate or segment.</td>
+                            </tr>
+                            <tr>
+                                <td class="mono">days_supply_inventory_proxy_band</td>
+                                <td>categorical</td>
+                                <td>Supply availability signal that helps separate constrained and balanced markets.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section-grid two">
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Locked defaults</h2>
+                    </div>
+                    <p class="muted">
+                        These fields are applied automatically so every prediction request remains aligned with the training pipeline.
+                    </p>
+                    <div class="pill-list">
+                        <span class="pill">model_year_position: Current Model Year</span>
+                        <span class="pill">primary_channel: Paid Social</span>
+                        <span class="pill">secondary_channel_syndicated_flag: No</span>
+                        <span class="pill">nameplate_lifecycle_stage: Steady State</span>
+                        <span class="pill">dealer_cosponsored_local_campaign_flag: No</span>
+                        <span class="pill">credit_availability_consumer_stress_band: Benign</span>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Why this matters</h2>
+                    </div>
+                    <div class="list-grid">
+                        <div class="list-row">
+                            <div>
+                                <strong>Schema parity</strong>
+                                <span>Keeps production requests shaped like the data used to train the classifier.</span>
+                            </div>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <strong>Fewer runtime errors</strong>
+                                <span>Prevents missing-field problems when users only enter the core lead signals.</span>
+                            </div>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <strong>Cleaner demos</strong>
+                                <span>Business users can focus on the handful of inputs they actually control.</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page feature reference for the scoring form and pipeline defaults.
+        </div>
+{% endblock %}

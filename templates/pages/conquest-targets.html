@@ -1,0 +1,80 @@
+{% extends "detail_base.html" %}
+
+{% block content %}
+<section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Market pressure</span>
+                    <h1>Conquest Targets and Pressure Analysis</h1>
+                    <p>
+                        This page turns the old popup into a wider market-pressure board so teams can read segment
+                        threats, inventory constraints, and financing pressure without squeezing into a modal.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/audience">Compare audience view</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Highest alert</h3>
+                    <div class="hero-card-value">EV</div>
+                    <p class="hero-card-copy">
+                        EV crossover competition remains the clearest segment where conquest activity is actively pressuring conversion performance.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="list-grid">
+                <div class="list-row">
+                    <div>
+                        <strong>EV crossover segment conquest</strong>
+                        <span>New market entrants are applying aggressive competitive pressure against compact electric portfolios.</span>
+                    </div>
+                    <span class="chip danger">High pressure</span>
+                </div>
+                <div class="list-row">
+                    <div>
+                        <strong>Hybrid and BEV inventory allocation</strong>
+                        <span>Tighter supply keeps promotional flexibility lower and can suppress incentive-based conversion lifts.</span>
+                    </div>
+                    <span class="chip warning">Under 30 days</span>
+                </div>
+                <div class="list-row">
+                    <div>
+                        <strong>Rising APR environment</strong>
+                        <span>Higher financing costs increase pressure on mainstream segments and make promotional offers more important.</span>
+                    </div>
+                    <span class="chip">Rate headwind</span>
+                </div>
+            </section>
+
+            <section class="section-grid two">
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Response ideas</h2>
+                    </div>
+                    <div class="pill-list">
+                        <span class="pill">Local dealer cash support</span>
+                        <span class="pill">Segment-specific EV messaging</span>
+                        <span class="pill">APR-sensitive lease campaigns</span>
+                        <span class="pill">Inventory-aware follow-up rules</span>
+                    </div>
+                </article>
+
+                <article class="note">
+                    <strong>Planning note</strong>
+                    <p>
+                        Conquest pressure is not just about competitors. It also compounds with inventory availability,
+                        pricing support, and regional financing conditions, so teams should read these signals together.
+                    </p>
+                </article>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page conquest and market-pressure summary for easier review.
+        </div>
+{% endblock %}

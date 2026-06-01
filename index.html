@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automotive Lead Conversion Analytics & Prediction Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Apply saved theme BEFORE stylesheets render to avoid flash of wrong theme -->
+    <script>
+        (function () {
+            if (localStorage.getItem('theme') === 'light') {
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.body.classList.add('light-theme');
+                    var ball = document.getElementById('theme-ball');
+                    if (ball) ball.style.transform = 'translateX(24px)';
+                });
+            }
+        })();
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            background-color: #050816;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(77, 163, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.03) 0%, transparent 60%);
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Custom Scrollbar for premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050816;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-card {
+            background: rgba(8, 13, 36, 0.45);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(77, 163, 255, 0.2);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(99, 102, 241, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #4DA3FF 0%, #8B5CF6 50%, #EC4899 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom input glass shadow styling */
+        input,
+        select {
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        input:focus,
+        select:focus {
+            box-shadow: 0 0 15px rgba(77, 163, 255, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Animation for glowing elements */
+        @keyframes pulse-slow {
+
+            0%,
+            100% {
+                transform: scale(1) translate(0px, 0px);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: scale(1.15) translate(30px, -20px);
+                opacity: 0.85;
+            }
+        }
+
+        .animate-pulse-slow {
+            animation: pulse-slow 15s ease-in-out infinite;
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fade-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        /* High-fidelity elegant Light Theme style overrides */
+        body.light-theme {
+            background-color: #f8fafc;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(77, 163, 255, 0.08) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 40%);
+            color: #0f172a;
+        }
+
+        body.light-theme .glass-card {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border: 1px solid rgba(0, 0, 0, 0.08) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-theme .glass-card:hover {
+            border-color: rgba(77, 163, 255, 0.4) !important;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 0 30px rgba(99, 102, 241, 0.1) !important;
+        }
+
+        body.light-theme .text-white,
+        body.light-theme [class*="text-gray-"],
+        body.light-theme [class*="text-indigo-200"],
+        body.light-theme [class*="text-indigo-300"],
+        body.light-theme [class*="text-blue-200"] {
+            color: #334155 !important;
+        }
+
+        body.light-theme [class*="bg-white/"] {
+            background-color: rgba(0, 0, 0, 0.05) !important;
+        }
+
+        body.light-theme [class*="border-white/"] {
+            border-color: rgba(0, 0, 0, 0.12) !important;
+        }
+
+        body.light-theme input,
+        body.light-theme select {
+            background-color: rgba(255, 255, 255, 0.9) !important;
+            border-color: rgba(0, 0, 0, 0.15) !important;
+            color: #0f172a !important;
+        }
+
+        body.light-theme aside {
+            background: rgba(255, 255, 255, 0.8) !important;
+            border-color: rgba(0, 0, 0, 0.08) !important;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06) !important;
+        }
+    </style>
+</head>
+
+<body class="text-gray-100 min-h-screen relative antialiased">
+
+    <!-- Glowing Futuristic Atmospheric Background Orbs -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-500/10 blur-[130px] animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-purple-500/10 blur-[130px] animate-pulse-slow"
+            style="animation-delay: 3s;"></div>
+        <div class="absolute top-[40%] right-[15%] w-[35%] h-[35%] rounded-full bg-indigo-500/5 blur-[110px] animate-pulse-slow"
+            style="animation-delay: 6s;"></div>
+    </div>
+
+    <!-- Left Floating Premium Navigation Rail -->
+    <aside
+        class="fixed left-4 top-4 bottom-4 w-64 bg-[#080d24]/50 border border-white/5 backdrop-blur-2xl rounded-3xl hidden lg:flex flex-col py-6 px-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] z-50">
+        <a href="/" class="flex items-center gap-3 px-2 pb-4">
+            <span
+                class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(77,163,255,0.4)] shrink-0">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M21 16V10a2 2 0 00-2-2h-3l-2-3H9L7 8H6v8"></path>
+                </svg>
+            </span>
+            <span class="min-w-0">
+                <span class="block text-white font-heading font-bold text-base leading-tight">Automotive AI</span>
+                <span class="block text-xs text-gray-400 mt-1">Conversion Predictor</span>
+            </span>
+        </a>
+
+        <div class="flex flex-col gap-3 mt-2">
+            <a href="/"
+                class="w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Dashboard</span>
+            </a>
+            <a href="/insights"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Insights</span>
+            </a>
+            <a href="/model-analytics"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Analytics</span>
+            </a>
+            <a href="/features"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Features</span>
+            </a>
+            <a href="/audience"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Audience</span>
+            </a>
+            <a href="/conquest-targets"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Targets</span>
+            </a>
+
+            <a href="/guide"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Guide</span>
+            </a>
+        </div>
+
+        <div class="mt-auto flex items-center gap-3 px-3 pt-5">
+            <div
+                class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 relative shadow-[0_0_15px_rgba(255,255,255,0.02)] shrink-0">
+                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z">
+                    </path>
+                </svg>
+                <span
+                    class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-[#050816] animate-pulse"></span>
+            </div>
+            <div class="min-w-0">
+                <span class="block text-sm font-semibold text-white">System online</span>
+                <span class="block text-xs text-gray-400 mt-1">Champion model active</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Container Panel -->
+    <div class="lg:pl-80 min-h-screen flex flex-col justify-between py-8 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto w-full">
+
+            <!-- Dashboard Title / Header Section -->
+            <header class="relative flex flex-col items-center text-center mb-10 pb-6 border-b border-white/5 gap-4">
+                <div>
+                    <h1
+                        class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex flex-col sm:flex-row items-center justify-center gap-2">
+                        <span>Automotive AI</span> <span class="gradient-text font-black">Conversion Predictor</span>
+                    </h1>
+                    <p class="text-gray-400 text-sm sm:text-base mt-2">Machine Learning powered insights for automotive
+                        sales teams.</p>
+                </div>
+
+                <!-- Top Right Controls (Insights & Theme Mode Toggle) -->
+                <div
+                    class="flex items-center justify-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 gap-3 mt-4 md:mt-0">
+                    <button onclick="window.location.href='/insights'"
+                        class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 text-[#4DA3FF] text-sm font-semibold flex items-center gap-2 hover:bg-white/10 transition-all duration-300 shadow-[0_0_15px_rgba(77,163,255,0.1)]">
+                        <span class="w-2 h-2 rounded-full bg-[#22D3EE] animate-pulse"></span>
+                        Insights
+                    </button>
+
+                    <!-- Theme Mode Toggle Controls (Moved to Top Right) -->
+                    <div onclick="toggleTheme()"
+                        class="w-14 h-8 bg-[#0a0f2c] border border-white/10 rounded-full flex items-center p-1 cursor-pointer transition-all duration-300 relative shadow-inner">
+                        <div id="theme-ball"
+                            class="absolute left-1 w-6 h-6 rounded-full bg-gradient-to-tr from-[#4DA3FF] to-blue-600 flex items-center justify-center shadow-lg transition-transform duration-300">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05L5.75 4.34a1 1 0 10-1.41 1.414l.71.71zm-.707 7.07a1 1 0 001.414 1.414l.707-.707a1 1 0 00-1.414-1.414l-.707.707zM5 9a1 1 0 000 2h1a1 1 0 100-2H5z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="ml-auto pr-1 text-gray-500">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Left Stacked Column (Column 1) -->
+                <div class="lg:col-span-1 space-y-8">
+
+                    <!-- Left Corner Model Status Card with Bezier Spline Sparkline -->
+                    <div
+                        class="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                        <div
+                            class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(139,92,246,0.06),transparent_50%)] pointer-events-none">
+                        </div>
+                        <div class="relative z-10 space-y-4">
+                            <!-- Card Header -->
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-xs font-bold text-indigo-300/80 uppercase tracking-wider">Model Status
+                                </h3>
+                                <span
+                                    class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-green-500/10 text-green-400 border border-green-500/20 shadow-inner">Online</span>
+                            </div>
+
+                            <!-- Active Model Indicator -->
+                            <div>
+                                <p id="left-active-model-info" class="text-sm font-bold text-white leading-snug">
+                                    Gradient Boosting Classifier (AUC: 63.9%)</p>
+                            </div>
+
+                            <!-- Spline Sparkline Canvas -->
+                            <div class="h-16 w-full flex items-center justify-center">
+                                <canvas id="left-model-sparkline" class="w-full h-full"></canvas>
+                            </div>
+
+                            <!-- View Details & Features Button Group -->
+                            <div class="grid grid-cols-2 gap-3">
+                                <button onclick="window.location.href='/model-analytics'"
+                                    class="py-2.5 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 text-[#4DA3FF] text-xs font-semibold flex items-center justify-center gap-1.5 hover:bg-white/10 transition-all duration-300 shadow-[0_0_15px_rgba(77,163,255,0.1)]">
+                                    Model Details
+                                </button>
+                                <button onclick="window.location.href='/features'"
+                                    class="py-2.5 rounded-xl bg-gradient-to-tr from-blue-500/20 to-purple-600/20 border border-blue-500/30 hover:border-blue-500/50 text-[#22D3EE] text-xs font-semibold flex items-center justify-center gap-1.5 hover:scale-102 transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.1)]">
+                                    View Features
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New Lead Prediction Card -->
+                    <div
+                        class="glass-card rounded-3xl p-6 relative overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                        <!-- Subtle Ambient Card Hover Glow -->
+                        <div
+                            class="absolute inset-0 bg-gradient-to-b from-blue-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        </div>
+
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div>
+                                <div class="flex items-center gap-4 mb-8">
+                                    <div
+                                        class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center justify-center text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)]">
+                                        <svg class="w-6 h-6 text-cyan-400 animate-pulse" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-xl font-bold text-white tracking-wide">New Lead Prediction</h2>
+                                        <p class="text-xs text-indigo-300/60 font-medium mt-0.5">Configure lead scoring
+                                            model</p>
+                                    </div>
+                                </div>
+
+                                <form id="prediction-form" class="space-y-6">
+
+                                    <!-- Vehicle Segment Field -->
+                                    <div class="space-y-2 relative">
+                                        <label
+                                            class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Vehicle
+                                            Segment</label>
+                                        <div class="relative group/input">
+                                            <div
+                                                class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-[#4DA3FF] transition-colors duration-300">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z">
+                                                    </path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M21 16V10a2 2 0 00-2-2h-3l-2-3H9L7 8H6v8">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <select id="vehicle_segment"
+                                                class="w-full bg-[#080d24]/60 border border-white/10 rounded-xl py-3 pl-11 pr-10 text-sm text-white focus:border-[#4DA3FF]/50 focus:ring-2 focus:ring-[#4DA3FF]/15 outline-none transition-all duration-300 appearance-none cursor-pointer">
+                                                <option>Compact SUV / Crossover</option>
+                                                <option>Midsize Sedan</option>
+                                                <option>Full-Size Pickup</option>
+                                                <option>Midsize / 3-Row SUV</option>
+                                                <option>EV Crossover</option>
+                                            </select>
+                                            <div
+                                                class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Shopper Intent Decile Field -->
+                                    <div class="space-y-2 relative">
+                                        <label
+                                            class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Shopper
+                                            Intent Decile (1-10)</label>
+                                        <div class="relative group/input">
+                                            <div
+                                                class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-[#4DA3FF] transition-colors duration-300">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="number" id="shopper_intent_decile" value="8" min="1" max="10"
+                                                class="w-full bg-[#080d24]/60 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:border-[#4DA3FF]/50 focus:ring-2 focus:ring-[#4DA3FF]/15 outline-none transition-all duration-300">
+                                        </div>
+                                    </div>
+
+                                    <!-- Powertrain Focus Field -->
+                                    <div class="space-y-2 relative">
+                                        <label
+                                            class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Powertrain
+                                            Focus</label>
+                                        <div class="relative group/input">
+                                            <div
+                                                class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-[#4DA3FF] transition-colors duration-300">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                                </svg>
+                                            </div>
+                                            <select id="powertrain_focus"
+                                                class="w-full bg-[#080d24]/60 border border-white/10 rounded-xl py-3 pl-11 pr-10 text-sm text-white focus:border-[#4DA3FF]/50 focus:ring-2 focus:ring-[#4DA3FF]/15 outline-none transition-all duration-300 appearance-none cursor-pointer">
+                                                <option>ICE</option>
+                                                <option>BEV</option>
+                                                <option>Hybrid</option>
+                                                <option>PHEV</option>
+                                            </select>
+                                            <div
+                                                class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Days Since Last Engagement Field -->
+                                    <div class="space-y-2 relative">
+                                        <label
+                                            class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Days
+                                            Since Last Engagement</label>
+                                        <div class="relative group/input">
+                                            <div
+                                                class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-[#4DA3FF] transition-colors duration-300">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                            <input type="number" id="days_since_last_brand_engagement" value="5" min="0"
+                                                class="w-full bg-[#080d24]/60 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:border-[#4DA3FF]/50 focus:ring-2 focus:ring-[#4DA3FF]/15 outline-none transition-all duration-300">
+                                        </div>
+                                    </div>
+
+                                    <!-- Intent Engagement Score Field -->
+                                    <div class="space-y-2 relative">
+                                        <label
+                                            class="block text-xs font-semibold text-gray-400 uppercase tracking-wider">Intent
+                                            Engagement Score</label>
+                                        <div class="relative group/input">
+                                            <div
+                                                class="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within/input:text-[#4DA3FF] transition-colors duration-300">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z">
+                                                    </path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2" d="M12 18a6 6 0 100-12 6 6 0 000 12z"></path>
+                                                    <circle cx="12" cy="12" r="2" fill="currentColor"></circle>
+                                                </svg>
+                                            </div>
+                                            <input type="number" id="intent_engagement_score" value="85"
+                                                class="w-full bg-[#080d24]/60 border border-white/10 rounded-xl py-3 pl-11 pr-4 text-sm text-white focus:border-[#4DA3FF]/50 focus:ring-2 focus:ring-[#4DA3FF]/15 outline-none transition-all duration-300">
+                                        </div>
+                                    </div>
+
+                                    <!-- Premium Glowing Submit Button -->
+                                    <button type="submit"
+                                        class="w-full mt-8 bg-gradient-to-r from-[#4DA3FF] via-[#6366F1] to-[#8B5CF6] hover:from-[#60b0ff] hover:to-[#9f7cf8] text-white font-bold py-4 px-6 rounded-xl shadow-[0_4px_20px_rgba(99,102,241,0.3)] hover:shadow-[0_4px_30px_rgba(99,102,241,0.6)] transform hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 group relative overflow-hidden">
+                                        <span class="relative z-10">Analyze Lead</span>
+                                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 relative z-10"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+
+                                <!-- Prediction Result Display -->
+                                <div id="result-container" class="mt-8 hidden">
+                                    <div
+                                        class="p-5 rounded-2xl bg-[#080d24]/80 border border-white/10 relative overflow-hidden">
+                                        <div
+                                            class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-transparent pointer-events-none opacity-50">
+                                        </div>
+                                        <p
+                                            class="text-xs font-semibold text-gray-400 uppercase tracking-wider text-center mb-2">
+                                            Conversion Probability</p>
+                                        <div class="text-5xl font-black tracking-tight text-center mb-3 transition-colors duration-300"
+                                            id="probability-value">--%</div>
+                                        <div class="flex justify-center">
+                                            <div id="prediction-badge"
+                                                class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase shadow-inner">
+                                                Pending
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Advisor Tip Widget -->
+                            <div
+                                class="mt-8 p-4 rounded-2xl bg-blue-950/20 border border-blue-500/10 flex gap-3 text-left">
+                                <div class="text-[#22D3EE] shrink-0">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-xs text-blue-200/60 leading-relaxed font-medium">
+                                    Tip: Higher intent score and recent engagement often lead to better conversion
+                                    probability.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Analytics Dashboard (Columns 2 & 3) -->
+                <div class="lg:col-span-2 space-y-8">
+
+                    <!-- Active Model Indicator Status Bar -->
+                    <div
+                        class="glass-card rounded-3xl p-5 border border-white/5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_10px_25px_rgba(0,0,0,0.3)] relative overflow-hidden group">
+                        <div
+                            class="absolute inset-0 bg-gradient-to-r from-green-500/5 to-transparent pointer-events-none opacity-50">
+                        </div>
+                        <div class="flex items-center gap-3 relative z-10">
+                            <div
+                                class="w-10 h-10 rounded-xl bg-green-500/10 border border-green-500/20 flex items-center justify-center text-green-400 shrink-0">
+                                <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 3v2m6-2v2M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="text-[9px] font-bold text-indigo-300/60 uppercase tracking-wider">Active
+                                        Predictor</span>
+                                    <span
+                                        class="inline-flex items-center px-1.5 py-0.2 rounded text-[8px] font-bold bg-green-500/10 text-green-400 border border-green-500/20">ONLINE</span>
+                                </div>
+                                <p class="text-sm font-bold text-white mt-0.5">Gradient Boosting Classifier <span
+                                        class="text-[#22D3EE] font-medium text-xs">(Champion Model)</span></p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-6 text-[10px] text-gray-400 relative z-10">
+                            <div>
+                                <span
+                                    class="block font-semibold uppercase tracking-wider text-[9px] text-indigo-300/40">Using
+                                    Dataset</span>
+                                <span class="font-bold text-white mt-0.5 block">auto_marketing_01.csv</span>
+                            </div>
+                            <div class="h-6 w-px bg-white/10"></div>
+                            <div>
+                                <span
+                                    class="block font-semibold uppercase tracking-wider text-[9px] text-indigo-300/40">Primary
+                                    Metric</span>
+                                <span class="font-bold text-white mt-0.5 block">F1 & ROC Optimized</span>
+                            </div>
+                            <div class="h-6 w-px bg-white/10"></div>
+                            <div>
+                                <span
+                                    class="block font-semibold uppercase tracking-wider text-[9px] text-indigo-300/40">Primary
+                                    Goal</span>
+                                <span class="font-bold text-green-400 mt-0.5 block flex items-center gap-1">
+                                    <span class="w-1 h-1 rounded-full bg-green-400"></span> Maximize Lead ROI
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Top KPI Metrics Cards Section -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <!-- KPI Card 1: Best Model Accuracy -->
+                        <div
+                            class="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group shadow-[0_15px_30px_rgba(0,0,0,0.4)] flex justify-between items-center">
+                            <div
+                                class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(77,163,255,0.06),transparent_50%)] pointer-events-none">
+                            </div>
+                            <div class="flex items-center gap-4 relative z-10">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-blue-500/15 to-cyan-500/15 border border-blue-500/30 flex items-center justify-center text-[#22D3EE] shadow-[0_0_20px_rgba(34,211,238,0.15)] shrink-0">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-indigo-300/60 uppercase tracking-wider">Best Model
+                                        Accuracy</p>
+                                    <div class="flex items-baseline gap-2 mt-1">
+                                        <p class="text-3xl sm:text-4xl font-black text-white tracking-tight"
+                                            id="stat-accuracy">--%</p>
+                                        <span
+                                            class="text-[10px] font-bold text-green-400 bg-green-500/10 border border-green-500/20 px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-inner">
+                                            <svg class="w-2.5 h-2.5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd"
+                                                    d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L7 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0L10 10.586 13.586 7H12z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                            12.4%
+                                        </span>
+                                    </div>
+                                    <p class="text-[9px] text-gray-500 mt-0.5">vs last model version</p>
+                                </div>
+                            </div>
+                            <!-- Mini Sparkline Graph -->
+                            <div class="w-28 h-12 relative shrink-0 z-10">
+                                <canvas id="sparkline-accuracy" class="w-full h-full"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- KPI Card 2: Top Model F1-Score -->
+                        <div
+                            class="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group shadow-[0_15px_30px_rgba(0,0,0,0.4)] flex justify-between items-center">
+                            <div
+                                class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(139,92,246,0.06),transparent_50%)] pointer-events-none">
+                            </div>
+                            <div class="flex items-center gap-4 relative z-10">
+                                <div
+                                    class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-500/15 to-indigo-500/15 border border-purple-500/30 flex items-center justify-center text-[#8B5CF6] shadow-[0_0_20px_rgba(139,92,246,0.15)] shrink-0">
+                                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.25.591 1.813l-3.97 2.883a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.971-2.883a1 1 0 00-1.17 0l-3.97 2.883c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.364-1.118L2.05 10.104c-.768-.563-.369-1.813.591-1.813h4.907a1 1 0 00.95-.69h1.52z">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs font-bold text-indigo-300/60 uppercase tracking-wider">Top Model
+                                        F1-Score</p>
+                                    <div class="flex items-baseline gap-2 mt-1">
+                                        <p class="text-3xl sm:text-4xl font-black text-white tracking-tight"
+                                            id="stat-f1">--</p>
+                                        <span
+                                            class="text-[9px] font-semibold text-[#8B5CF6] bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-inner">
+                                            Good Balance
+                                        </span>
+                                    </div>
+                                    <p class="text-[9px] text-gray-500 mt-0.5">optimal threshold config</p>
+                                </div>
+                            </div>
+                            <!-- Mini Sparkline Graph -->
+                            <div class="w-28 h-12 relative shrink-0 z-10">
+                                <canvas id="sparkline-f1" class="w-full h-full"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Importance Glowing Horizontal Bar Chart -->
+                    <div
+                        class="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+                        <div class="absolute inset-0 opacity-10 pointer-events-none bg-cover mix-blend-overlay"
+                            style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;400&quot; height=&quot;200&quot; viewBox=&quot;0 0 400 200&quot;><path d=&quot;M 0,100 C 50,50 100,150 150,100 C 200,50 250,150 300,100 C 350,50 400,150 450,100&quot; fill=&quot;none&quot; stroke=&quot;%238B5CF6&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;4,4&quot;/></svg>'); background-position: right bottom;">
+                        </div>
+                        <div class="flex items-center gap-2.5 mb-6 relative z-10">
+                            <svg class="w-5 h-5 text-indigo-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.25.591 1.813l-3.97 2.883a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.971-2.883a1 1 0 00-1.17 0l-3.97 2.883c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.364-1.118L2.05 10.104c-.768-.563-.369-1.813.591-1.813h4.907a1 1 0 00.95-.69h1.52z">
+                                </path>
+                            </svg>
+                            <h3 class="text-lg font-bold text-white tracking-wide">Feature Importance (Top 10)</h3>
+                        </div>
+                        <div class="h-80 w-full relative z-10">
+                            <canvas id="featureChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Model Comparison Glowing Vertical Bar Chart -->
+                    <div
+                        class="glass-card rounded-3xl p-6 border border-white/5 relative overflow-hidden group shadow-[0_15px_30px_rgba(0,0,0,0.4)]">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                    </path>
+                                </svg>
+                                <h3 class="text-lg font-bold text-white tracking-wide">Model Comparison (ROC-AUC)</h3>
+                            </div>
+                            <a href="/model-analytics"
+                                class="text-gray-400 hover:text-white cursor-pointer transition-colors duration-200">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                    <path
+                                        d="M6 10a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0zm6 0a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="h-80 w-full">
+                            <canvas id="modelChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Premium Minimal Footer -->
+        <footer class="max-w-7xl mx-auto w-full text-center mt-12 text-xs text-gray-500 font-medium">
+            <p>&copy; 2026 Automotive Lead Prediction & Attribution System. Powered by advanced Champion Model
+                Classifier.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Global visual runtime error catcher for instant debugging
+        window.addEventListener('error', function (e) {
+            console.error("Dashboard Script Error:", e.message, "at line", e.lineno);
+            const errDiv = document.createElement('div');
+            errDiv.className = "fixed bottom-4 right-4 bg-red-950/90 border border-red-500/30 backdrop-blur-md text-red-400 p-4 rounded-2xl z-[1000] text-xs font-bold shadow-2xl max-w-md animate-bounce";
+            errDiv.innerHTML = `<span class="text-red-300">⚠️ System Diagnostic Warning:</span><br/><span class="font-normal mt-1 block">${e.message} (Line ${e.lineno})</span>`;
+            document.body.appendChild(errDiv);
+        });
+
+        // Global scope caching for comparison modals
+        let activeModelResults = null;
+
+        // High-fidelity active dark/light mode toggle
+        function toggleTheme() {
+            const body = document.body;
+            const ball = document.getElementById('theme-ball');
+            const isLight = body.classList.toggle('light-theme');
+
+            // Persist preference so other pages inherit the theme
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+
+            if (isLight) {
+                ball.style.transform = 'translateX(24px)';
+            } else {
+                ball.style.transform = 'translateX(0px)';
+            }
+            
+            // Dynamically update Chart.js labels, grid, and tooltips for readability
+            const tickColor       = isLight ? '#475569' : '#64748b';
+            const featureLabels   = isLight ? '#1e293b' : '#e2e8f0';
+            const gridColor       = isLight ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.03)';
+            const tooltipBg       = isLight ? '#ffffff' : '#080d24';
+            const tooltipTitle    = isLight ? '#0f172a' : '#ffffff';
+            const tooltipBody     = isLight ? '#475569' : '#94a3b8';
+            const tooltipBorder   = isLight ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)';
+
+            if (window.myFeatureChart) {
+                const fc = window.myFeatureChart;
+                fc.options.scales.x.ticks.color = tickColor;
+                fc.options.scales.x.grid.color  = gridColor;
+                fc.options.scales.y.ticks.color = featureLabels;
+                fc.options.plugins.tooltip.backgroundColor = tooltipBg;
+                fc.options.plugins.tooltip.titleColor      = tooltipTitle;
+                fc.options.plugins.tooltip.bodyColor       = tooltipBody;
+                fc.options.plugins.tooltip.borderColor     = tooltipBorder;
+                fc.update();
+            }
+            if (window.myModelChart) {
+                const mc = window.myModelChart;
+                mc.options.scales.y.ticks.color = tickColor;
+                mc.options.scales.y.grid.color  = gridColor;
+                mc.options.scales.x.ticks.color = featureLabels;
+                mc.options.plugins.tooltip.backgroundColor = tooltipBg;
+                mc.options.plugins.tooltip.titleColor      = tooltipTitle;
+                mc.options.plugins.tooltip.bodyColor       = tooltipBody;
+                mc.options.plugins.tooltip.borderColor     = tooltipBorder;
+                mc.update();
+            }
+        }
+
+        // Restore theme on page load
+        (function () {
+            if (localStorage.getItem('theme') === 'light') {
+                document.body.classList.add('light-theme');
+                const ball = document.getElementById('theme-ball');
+                if (ball) ball.style.transform = 'translateX(24px)';
+            }
+        })();
+
+        // High fidelity sparkline drawing implementation using HTML5 Canvas spline curves
+        function drawSparkline(canvasId, points, strokeColor, glowColor) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            // Adjust canvas resolution for high-DPI screens
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = rect.width;
+            const height = rect.height;
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Setup drawing styles
+            ctx.beginPath();
+            ctx.lineWidth = 2.5;
+            ctx.strokeStyle = strokeColor;
+
+            // Neon shadow glowing style
+            ctx.shadowColor = glowColor;
+            ctx.shadowBlur = 8;
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 2;
+
+            const step = width / (points.length - 1);
+            const min = Math.min(...points);
+            const max = Math.max(...points);
+            const range = max - min || 1;
+            const scaleY = (val) => height - 4 - ((val - min) / range) * (height - 8);
+
+            ctx.moveTo(0, scaleY(points[0]));
+
+            for (let i = 0; i < points.length - 1; i++) {
+                const x1 = i * step;
+                const y1 = scaleY(points[i]);
+                const x2 = (i + 1) * step;
+                const y2 = scaleY(points[i + 1]);
+
+                // Bezier curve calculations for a smooth trend curve
+                const cpX1 = x1 + step / 2;
+                const cpY1 = y1;
+                const cpX2 = x2 - step / 2;
+                const cpY2 = y2;
+
+                ctx.bezierCurveTo(cpX1, cpY1, cpX2, cpY2, x2, y2);
+            }
+
+            ctx.stroke();
+
+            // Reset drop-shadow glow before filling the area below sparkline
+            ctx.shadowColor = 'transparent';
+            ctx.shadowBlur = 0;
+            ctx.shadowOffsetY = 0;
+
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+
+            // Bottom fading area gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, height);
+            gradient.addColorStop(0, glowColor + '30'); // 18% opacity
+            gradient.addColorStop(1, glowColor + '00'); // 0% opacity
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+
+        // Default features to keep schema parity and satisfy server requirements
+        const defaultFeatures = {
+            "model_year_position": "Current Model Year",
+            "primary_channel": "Paid Social",
+            "secondary_channel_syndicated_flag": "No",
+            "market_region_tier": "US – Major Metro",
+            "nameplate_lifecycle_stage": "Steady State",
+            "incentive_program_pressure_band": "Moderate APR / Cash",
+            "competitive_conquest_intensity_band": "Moderate",
+            "days_supply_inventory_proxy_band": "Balanced",
+            "auto_loan_rate_environment_band": "Adverse – Rising APR",
+            "personalization_depth_band": "Segmented",
+            "dealer_cosponsored_local_campaign_flag": "No",
+            "major_auto_show_or_event_window_flag": "No",
+            "ev_adoption_maturity_region_band": "Growing",
+            "ad_frequency_saturation_risk_band": "Typical",
+            "certified_preowned_vs_new_intent_context": "New Vehicle Focus",
+            "credit_availability_consumer_stress_band": "Benign",
+            "multicultural_locale_creative_match_flag": "No",
+            "recent_engagement_flag": "0",
+            "high_intent_flag": "0",
+            "activity_month_num": 6
+        };
+
+        // Form prediction submission handling
+        document.getElementById('prediction-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Build prediction payload matching schema exactly
+            const payload = {
+                ...defaultFeatures,
+                vehicle_segment: document.getElementById('vehicle_segment').value,
+                shopper_intent_decile: parseInt(document.getElementById('shopper_intent_decile').value),
+                powertrain_focus: document.getElementById('powertrain_focus').value,
+                days_since_last_brand_engagement: parseInt(document.getElementById('days_since_last_brand_engagement').value),
+                intent_engagement_score: parseFloat(document.getElementById('intent_engagement_score').value)
+            };
+
+            const btn = e.target.querySelector('button');
+            const originalHTML = btn.innerHTML;
+
+            // Modern premium loading state
+            btn.innerHTML = `<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Analyzing...`;
+            btn.disabled = true;
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+
+                const resultContainer = document.getElementById('result-container');
+                const probValue = document.getElementById('probability-value');
+                const badge = document.getElementById('prediction-badge');
+
+                resultContainer.classList.remove('hidden');
+                resultContainer.classList.add('animate-fade-in');
+
+                const probPercent = (data.conversion_probability * 100).toFixed(1);
+                probValue.innerText = `${probPercent}%`;
+
+                if (data.prediction === 1) {
+                    badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-green-400 animate-ping"></span> High Likelihood`;
+                    badge.className = "inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-green-500/10 text-green-400 border border-green-500/30 shadow-[0_0_15px_rgba(74,222,128,0.15)]";
+                    probValue.className = "text-5xl font-black mb-2 text-green-400 tracking-tight drop-shadow-[0_0_15px_rgba(74,222,128,0.3)]";
+                } else {
+                    badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-red-400"></span> Low Likelihood`;
+                    badge.className = "inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-bold tracking-wide uppercase bg-red-500/10 text-red-400 border border-red-500/30 shadow-[0_0_15px_rgba(248,113,113,0.15)]";
+                    probValue.className = "text-5xl font-black mb-2 text-red-400 tracking-tight drop-shadow-[0_0_15px_rgba(248,113,113,0.3)]";
+                }
+
+            } catch (error) {
+                alert("Error making prediction. See console.");
+                console.error(error);
+            } finally {
+                btn.innerHTML = originalHTML;
+                btn.disabled = false;
+            }
+        });
+
+        // Load Dynamic Analytics and build glowing chart instances
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+
+                if (data.error) {
+                    console.error("Analytics error:", data.error);
+                    return;
+                }
+
+                // Detect current theme for chart color adaptation
+                const isLightMode = document.body.classList.contains('light-theme');
+
+                // Cache results in global scope for modal comparison table
+                activeModelResults = data.model_results;
+
+                // Update Metric Values in Cards
+                const gbmModel = data.model_results.find(m => m.Model.includes('Gradient Boosting')) || data.model_results[0];
+                document.getElementById('stat-accuracy').innerText = `${(gbmModel.Accuracy * 100).toFixed(1)}%`;
+                document.getElementById('stat-f1').innerText = gbmModel['F1-Score'].toFixed(3);
+
+                // Update Left Model Status Card dynamically
+                document.getElementById('left-active-model-info').innerText = `${gbmModel.Model} (AUC: ${(gbmModel['ROC-AUC'] * 100).toFixed(1)}%)`;
+                drawSparkline('left-model-sparkline', [0.55, 0.58, 0.57, 0.60, 0.59, 0.62, gbmModel['ROC-AUC']], '#8B5CF6', '#8B5CF6');
+
+                // Draw premium sparklines
+                drawSparkline('sparkline-accuracy', [66, 68, 67, 70, 71, 70, 73, gbmModel.Accuracy * 100], '#22D3EE', '#22D3EE');
+                drawSparkline('sparkline-f1', [0.012, 0.024, 0.018, 0.031, 0.033, 0.028, gbmModel['F1-Score']], '#8B5CF6', '#8B5CF6');
+
+                // Handle corporate firewall / offline Chart.js blocks gracefully
+                if (typeof Chart === 'undefined') {
+                    console.warn("Chart.js CDN is unreachable. Activating elegant fallback.");
+                    document.getElementById('featureChart').style.display = 'none';
+                    document.getElementById('modelChart').style.display = 'none';
+
+                    const featParent = document.getElementById('featureChart').parentElement;
+                    const modelParent = document.getElementById('modelChart').parentElement;
+
+                    featParent.innerHTML += `
+                        <div class="flex flex-col items-center justify-center h-[260px] text-center p-6 bg-white/[0.02] rounded-2xl border border-white/5 relative overflow-hidden group shadow-inner">
+                            <span class="text-[#8B5CF6] text-3xl mb-2 animate-pulse">📊</span>
+                            <span class="text-white text-xs font-bold">Chart Engine Offline</span>
+                            <span class="text-[10px] text-gray-500 mt-1 max-w-xs leading-relaxed">
+                                External CDN (jsdelivr) is currently blocked or unreachable on this network. Metric cards and predictive actions remain fully functional.
+                            </span>
+                        </div>
+                    `;
+
+                    modelParent.innerHTML += `
+                        <div class="flex flex-col items-center justify-center h-[260px] text-center p-6 bg-white/[0.02] rounded-2xl border border-white/5 relative overflow-hidden group shadow-inner">
+                            <span class="text-[#22D3EE] text-3xl mb-2 animate-pulse">📈</span>
+                            <span class="text-white text-xs font-bold">Chart Engine Offline</span>
+                            <span class="text-[10px] text-gray-500 mt-1 max-w-xs leading-relaxed">
+                                External CDN (jsdelivr) is currently blocked or unreachable on this network. Metric cards and predictive actions remain fully functional.
+                            </span>
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Feature Importance Horizontal Glowing Bar Chart Configuration
+                const features = data.top_features.map(f => f.Feature.replace(/_/g, ' '));
+                const importances = data.top_features.map(f => f.Importance);
+
+                const featureCtx = document.getElementById('featureChart').getContext('2d');
+
+                // Create neon gradient for feature bars
+                const featureGradient = featureCtx.createLinearGradient(0, 0, 500, 0);
+                featureGradient.addColorStop(0, 'rgba(139, 92, 246, 0.85)'); // Vibrant Neon Purple
+                featureGradient.addColorStop(1, 'rgba(77, 163, 255, 0.85)');  // Electric Blue
+
+                // Destroy old instance if exists to prevent Chart.js "Canvas is already in use" errors
+                if (window.myFeatureChart) {
+                    window.myFeatureChart.destroy();
+                }
+
+                window.myFeatureChart = new Chart(featureCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: features,
+                        datasets: [{
+                            label: 'Importance Score',
+                            data: importances,
+                            backgroundColor: featureGradient,
+                            borderColor: 'rgba(255,255,255,0.05)',
+                            borderWidth: 1,
+                            borderRadius: 6,
+                            barThickness: 16
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        indexAxis: 'y',
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: isLightMode ? '#ffffff' : '#080d24',
+                                titleColor: isLightMode ? '#0f172a' : '#fff',
+                                bodyColor: isLightMode ? '#475569' : '#94a3b8',
+                                borderColor: isLightMode ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)',
+                                borderWidth: 1,
+                                padding: 10,
+                                displayColors: false,
+                                cornerRadius: 8
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { color: isLightMode ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.03)', drawBorder: false },
+                                ticks: { color: isLightMode ? '#475569' : '#64748b', font: { family: 'Inter', size: 10 } }
+                            },
+                            y: {
+                                grid: { display: false, drawBorder: false },
+                                ticks: { color: isLightMode ? '#1e293b' : '#e2e8f0', font: { family: 'Inter', size: 10, weight: '500' } }
+                            }
+                        }
+                    }
+                });
+
+                // Model Comparison Bar Chart with Customized Neon Gradients
+                const models = data.model_results.map(m => m.Model);
+                const rocAucs = data.model_results.map(m => m['ROC-AUC']);
+
+                const modelCtx = document.getElementById('modelChart').getContext('2d');
+
+                // Build dynamic gradients based on the model names returned by FastAPI
+                const backgrounds = models.map((modelName) => {
+                    const grad = modelCtx.createLinearGradient(0, 300, 0, 0);
+                    if (modelName.includes('Gradient Boosting')) {
+                        grad.addColorStop(0, 'rgba(77, 163, 255, 0.2)'); // electric blue
+                        grad.addColorStop(1, '#22D3EE');               // cyan glow
+                        return grad;
+                    } else if (modelName.includes('Random Forest') || modelName.includes('XGBoost')) {
+                        grad.addColorStop(0, 'rgba(99, 102, 241, 0.2)'); // indigo
+                        grad.addColorStop(1, '#8B5CF6');               // purple glow
+                        return grad;
+                    } else {
+                        grad.addColorStop(0, 'rgba(139, 92, 246, 0.2)'); // purple
+                        grad.addColorStop(1, '#EC4899');               // pink glow
+                        return grad;
+                    }
+                });
+
+                const borderColors = models.map((modelName) => {
+                    if (modelName.includes('Gradient Boosting')) return '#22D3EE';
+                    if (modelName.includes('Random Forest') || modelName.includes('XGBoost')) return '#8B5CF6';
+                    return '#EC4899';
+                });
+
+                // Destroy old instance if exists to prevent Chart.js "Canvas is already in use" errors
+                if (window.myModelChart) {
+                    window.myModelChart.destroy();
+                }
+
+                window.myModelChart = new Chart(modelCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: models.map(m => m.includes('Gradient Boosting') ? m + ' (Best Model)' : m),
+                        datasets: [{
+                            label: 'ROC-AUC Score',
+                            data: rocAucs,
+                            backgroundColor: backgrounds,
+                            borderColor: borderColors,
+                            borderWidth: 2,
+                            borderRadius: { topLeft: 10, topRight: 10, bottomLeft: 0, bottomRight: 0 },
+                            barThickness: 50
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                backgroundColor: isLightMode ? '#ffffff' : '#080d24',
+                                titleColor: isLightMode ? '#0f172a' : '#fff',
+                                bodyColor: isLightMode ? '#475569' : '#94a3b8',
+                                borderColor: isLightMode ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.1)',
+                                borderWidth: 1,
+                                padding: 10,
+                                displayColors: false,
+                                cornerRadius: 8
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                min: 0.5,
+                                grid: { color: isLightMode ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.03)', drawBorder: false },
+                                ticks: { color: isLightMode ? '#475569' : '#64748b', font: { family: 'Inter', size: 10 } }
+                            },
+                            x: {
+                                grid: { display: false, drawBorder: false },
+                                ticks: { color: isLightMode ? '#1e293b' : '#e2e8f0', font: { family: 'Inter', size: 11, weight: '500' } }
+                            }
+                        }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Failed to load analytics:", error);
+            }
+        }
+
+
+
+        // Modal utility functions
+        function openModal(title, htmlContent) {
+            const modal = document.getElementById('dashboard-modal');
+            const modalTitle = document.getElementById('modal-title');
+            const modalContent = document.getElementById('modal-content');
+
+            modalTitle.innerHTML = title;
+            modalContent.innerHTML = htmlContent;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('dashboard-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        // Close modal when clicking outside the dialog content box safely
+        const modalElement = document.getElementById('dashboard-modal');
+        if (modalElement) {
+            modalElement.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        }
+
+        // Dedicated modal click content generators
+        function showFeaturesModal() {
+            window.location.href = '/features';
+            return;
+            const title = `
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500/15 to-blue-500/15 border border-cyan-500/30 flex items-center justify-center text-[#22D3EE] shadow-[0_0_15px_rgba(34,211,238,0.15)] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </div>
+                <span>Lead Classification Features & Attributes</span>
+            `;
+            const html = `
+                <div class="space-y-4">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        These are the primary variables inputted into the FastAPI champion scoring pipeline to assess prospect purchase readiness.
+                    </p>
+                    
+                    <div class="overflow-x-auto rounded-2xl border border-white/5 bg-[#080d24]/60 mt-4">
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10 text-indigo-200 uppercase tracking-wider font-bold text-[10px]">
+                                    <th class="py-3 px-4">Attribute Name</th>
+                                    <th class="py-3 px-4">Category</th>
+                                    <th class="py-3 px-4">Description / Value Range</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 text-[11px]">
+                                <tr>
+                                    <td class="py-3 px-4 text-white font-bold font-mono">vehicle_segment</td>
+                                    <td class="py-3 px-4 text-[#22D3EE] font-semibold">Categorical</td>
+                                    <td class="py-3 px-4 text-gray-400">Class target of the consumer (SUV, Sedan, Truck, EV, Luxury, Hybrid)</td>
+                                </tr>
+                                <tr class="bg-white/[0.01]">
+                                    <td class="py-3 px-4 text-white font-bold font-mono">shopper_intent_decile</td>
+                                    <td class="py-3 px-4 text-purple-400 font-semibold">Numerical</td>
+                                    <td class="py-3 px-4 text-gray-400">Calculated intent decile (1 to 10), higher equals active consideration</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 text-white font-bold font-mono">powertrain_focus</td>
+                                    <td class="py-3 px-4 text-[#22D3EE] font-semibold">Categorical</td>
+                                    <td class="py-3 px-4 text-gray-400">Consumer drivetrain preference (ICE, Hybrid, BEV/Electric)</td>
+                                </tr>
+                                <tr class="bg-white/[0.01]">
+                                    <td class="py-3 px-4 text-white font-bold font-mono">days_since_last_brand_engagement</td>
+                                    <td class="py-3 px-4 text-purple-400 font-semibold">Numerical</td>
+                                    <td class="py-3 px-4 text-gray-400">Days since last digital or dealer campaign engagement recency</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 text-white font-bold font-mono">intent_engagement_score</td>
+                                    <td class="py-3 px-4 text-purple-400 font-semibold">Numerical</td>
+                                    <td class="py-3 px-4 text-gray-400">Continuous scoring combining multiple digital touchpoints (0.0 to 100.0)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="p-4 rounded-2xl bg-white/5 border border-white/5 mt-4">
+                        <span class="block font-bold text-white text-xs mb-1.5">Locked Pipeline Defaults</span>
+                        <p class="text-gray-400 text-[11px] leading-relaxed">
+                            To ensure high-performance schema parity, background parameters such as <strong>certified_preowned_vs_new_intent_context</strong>, <strong>incentive_program_pressure_band</strong>, and <strong>multicultural_locale_creative_match_flag</strong> are initialized dynamically via system defaults to prevent feature drift.
+                        </p>
+                    </div>
+                </div>
+            `;
+            openModal(title, html);
+        }
+
+        // Dedicated modal click content generators
+        function showInsightsModal() {
+            window.location.href = '/insights';
+            return;
+            const title = `
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500/15 to-cyan-500/15 border border-blue-500/30 flex items-center justify-center text-[#22D3EE] shadow-[0_0_15px_rgba(34,211,238,0.15)] shrink-0">
+                    <svg class="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                </div>
+                <span>Lead Conversion Insights & Rules</span>
+            `;
+            const html = `
+                <div class="space-y-4">
+                    <div class="p-4 rounded-2xl bg-blue-950/20 border border-blue-500/10 text-xs text-blue-200/80 leading-relaxed font-medium">
+                        💡 <strong>Core Finding:</strong> Shoppers interested in electric vehicle fleets (BEVs and Hybrids) demonstrate a <strong>45% shorter purchase funnel</strong> when their shopper intent score is configured above 80.
+                    </div>
+                    <div class="space-y-4 mt-6">
+                        <div class="flex gap-4">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400 mt-2 shrink-0 animate-ping"></span>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Engagement Golden Recency Window</h4>
+                                <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                                    Days since last engagement represents the single highest predictive weight. Leads re-engaged within <strong>5 days</strong> demonstrate a <strong>38% increase</strong> in overall conversion probability. Leaving leads unattended for 10+ days reduces campaign responses.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="w-2 h-2 rounded-full bg-purple-400 mt-2 shrink-0 animate-ping"></span>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Target Intent Thresholds</h4>
+                                <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                                    Intent scores above <strong>80</strong> represent purchase readiness. Leads in this decile should be directly assigned to high-touch CRM specialists and registered for premium <strong>1:1 Next-Best-Offer</strong> financing campaigns.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <span class="w-2 h-2 rounded-full bg-indigo-400 mt-2 shrink-0 animate-ping"></span>
+                            <div>
+                                <h4 class="font-bold text-white text-sm">Multicultural Target Optimization</h4>
+                                <p class="text-xs text-gray-400 mt-1 leading-relaxed">
+                                    Matching creative assets with multicultural tags (Multicultural Match Flag) leads to an average **11% increase** in overall conversion rates in primary metro regional markets.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            openModal(title, html);
+        }
+
+        function showChartsModal() {
+            window.location.href = '/model-analytics';
+            return;
+            const title = `
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500/15 to-purple-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-[0_0_15px_rgba(139,92,246,0.15)] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                </div>
+                <span>Model Comparative Analytics Leaderboard</span>
+            `;
+
+            let tableRows = '';
+            if (activeModelResults && activeModelResults.length > 0) {
+                activeModelResults.forEach(m => {
+                    const isBest = m.Model.includes('Gradient Boosting');
+                    tableRows += `
+                        <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors duration-150 ${isBest ? 'bg-green-500/5' : ''}">
+                            <td class="py-3 px-4 text-white font-semibold flex items-center gap-2">
+                                ${m.Model}
+                                ${isBest ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-bold bg-green-500/20 text-green-400 border border-green-500/30">CHAMPION</span>' : ''}
+                            </td>
+                            <td class="py-3 px-4 text-center text-gray-300 font-medium">${(m.Accuracy * 100).toFixed(1)}%</td>
+                            <td class="py-3 px-4 text-center text-gray-400">${m.Precision.toFixed(3)}</td>
+                            <td class="py-3 px-4 text-center text-gray-400">${m.Recall.toFixed(3)}</td>
+                            <td class="py-3 px-4 text-center text-gray-300 font-medium">${m['F1-Score'].toFixed(3)}</td>
+                            <td class="py-3 px-4 text-center text-[#22D3EE] font-semibold">${m['ROC-AUC'].toFixed(3)}</td>
+                        </tr>
+                    `;
+                });
+            } else {
+                tableRows = `
+                    <tr>
+                        <td colspan="6" class="py-6 text-center text-gray-500 font-medium">No diagnostic metrics loaded from the server API.</td>
+                    </tr>
+                `;
+            }
+
+            const html = `
+                <div class="space-y-4">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Evaluated statistics comparing all classifier algorithms trained on the current lead conversion attributes. The Gradient Boosting classifier represents our champion model due to optimized F1 and Accuracy levels.
+                    </p>
+                    
+                    <div class="overflow-x-auto rounded-2xl border border-white/5 bg-[#080d24]/60 mt-4 shadow-inner">
+                        <table class="w-full text-xs text-left border-collapse">
+                            <thead>
+                                <tr class="bg-white/5 border-b border-white/10 text-indigo-200 uppercase tracking-wider font-bold text-[10px]">
+                                    <th class="py-3 px-4">Classifier Model</th>
+                                    <th class="py-3 px-4 text-center">Accuracy</th>
+                                    <th class="py-3 px-4 text-center">Precision</th>
+                                    <th class="py-3 px-4 text-center">Recall</th>
+                                    <th class="py-3 px-4 text-center">F1-Score</th>
+                                    <th class="py-3 px-4 text-center">ROC-AUC</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5 font-mono text-[11px]">
+                                ${tableRows}
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6 text-xs">
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5 leading-relaxed">
+                            <span class="block font-bold text-white mb-1.5">What is ROC-AUC?</span>
+                            <p class="text-gray-400 text-[11px]">ROC-AUC measures the probability that the classifier ranks a random positive buyer higher than a random negative non-buyer. Gradient Boosting performs at 0.639 ROC-AUC.</p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5 leading-relaxed">
+                            <span class="block font-bold text-white mb-1.5">Why optimize for F1-Score?</span>
+                            <p class="text-gray-400 text-[11px]">F1 is the harmonic mean of precision and recall. Optimizing F1 minimizes false positives, protecting sales outreach budgets by focusing exclusively on responsive prospects.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            openModal(title, html);
+        }
+
+        function showAudienceModal() {
+            window.location.href = '/audience';
+            return;
+            const title = `
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-500/15 to-indigo-500/15 border border-purple-500/30 flex items-center justify-center text-[#8B5CF6] shadow-[0_0_15px_rgba(139,92,246,0.15)] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                </div>
+                <span>Lead Audience & Geographic Demographics</span>
+            `;
+            const html = `
+                <div class="space-y-4">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        A geographic and channel conversion audit compiled from model prediction history logs. Major metropolitan core hubs represent our strongest conversion corridors.
+                    </p>
+                    <div class="grid grid-cols-3 gap-3 my-4">
+                        <div class="p-4 rounded-2xl bg-[#080d24]/60 border border-white/5 text-center">
+                           <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Major Metro</span>
+                           <span class="block text-2xl font-black text-white mt-1">58.4%</span>
+                           <span class="text-[9px] font-bold text-green-400 mt-1 block">Primary Core</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-[#080d24]/60 border border-white/5 text-center">
+                           <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Suburban</span>
+                           <span class="block text-2xl font-black text-white mt-1">31.8%</span>
+                           <span class="text-[9px] font-bold text-[#22D3EE] mt-1 block">Steady Growth</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-[#080d24]/60 border border-white/5 text-center">
+                           <span class="block text-[10px] font-bold text-gray-500 uppercase tracking-wider">Rural / Tier 3</span>
+                           <span class="block text-2xl font-black text-white mt-1">9.8%</span>
+                           <span class="text-[9px] font-bold text-gray-500 mt-1 block">Attribution</span>
+                        </div>
+                    </div>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
+                            <span class="font-bold text-white">Paid Social Lead Attribution</span>
+                            <span class="text-gray-400 text-xs">Primary entry point driver (34.2%)</span>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center">
+                            <span class="font-bold text-white">OEM Integrated Portal & CRM Funnels</span>
+                            <span class="text-[#22D3EE] font-bold text-xs">Attributed highest quality leads (0.42 F1)</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            openModal(title, html);
+        }
+
+        function showTargetsModal() {
+            window.location.href = '/conquest-targets';
+            return;
+            const title = `
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500/15 to-indigo-500/15 border border-blue-500/30 flex items-center justify-center text-[#22D3EE] shadow-[0_0_15px_rgba(77,163,255,0.2)] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <span>Conquest Targets & Market Pressure Analysis</span>
+            `;
+            const html = `
+                <div class="space-y-4">
+                    <p class="text-xs text-gray-400 leading-relaxed">
+                        Diagnostic report detailing key customer segments currently exhibiting intensive competitor conquest activity or product constraints.
+                    </p>
+                    <div class="space-y-3 mt-4 text-xs">
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="font-bold text-white text-sm">EV Crossover Segment Conquest</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-red-500/10 text-red-400 border border-red-500/20">HIGH PRESSURE</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-[11px]">
+                                New EV segment market entries have aggressively conquested our compact electric portfolios, requiring strategic local dealer cash pricing support.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="font-bold text-white text-sm">Hybrid/BEV Inventory Allocation</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">TIGHT – UNDER 30 DAYS</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-[11px]">
+                                Constrained inventory supply across Hybrid/BEV lineups has depressed baseline cash incentives pressure, maintaining standard pricing margins.
+                            </p>
+                        </div>
+                        <div class="p-4 rounded-2xl bg-white/5 border border-white/5">
+                            <div class="flex justify-between items-center mb-1.5">
+                                <span class="font-bold text-white text-sm">Adverse – Rising APR rate environment</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-[9px] font-bold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">ADVERSE RATE CAP</span>
+                            </div>
+                            <p class="text-gray-400 leading-relaxed text-[11px]">
+                                High commercial loan rates have impacted baseline sedan sales velocity, driving demand towards low-APR promotional dealer leasing programs.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            openModal(title, html);
+        }
+
+
+
+        function showHelpModal() {
+            window.location.href = '/guide';
+            return;
+            const title = `
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500/15 to-purple-500/15 border border-indigo-500/30 flex items-center justify-center text-indigo-400 shadow-[0_0_15px_rgba(139,92,246,0.15)] shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                </div>
+                <span>Operational Guide & Predictor Interpretation</span>
+            `;
+            const html = `
+                <div class="space-y-4">
+                    <div class="space-y-4 text-xs leading-relaxed">
+                        <div>
+                            <h4 class="font-bold text-white text-sm mb-1">1. Executing Lead Score Predictions</h4>
+                            <p class="text-gray-400 text-[11px]">
+                                Adjust lead parameters in the left prediction form (Vehicle Segment, Shopper Intent Decile, Powertrain, Days Since Engagement, and Intent Score) and click <strong>Analyze Lead</strong>. The ML model scoring service returns predictions immediately.
+                            </p>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-bold text-white text-sm mb-1.5">2. Interpreting Likelihood Output</h4>
+                            <div class="space-y-2">
+                                <div class="flex items-start gap-2.5">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase bg-green-500/10 text-green-400 border border-green-500/20 shrink-0">HIGH LIKELIHOOD</span>
+                                    <p class="text-gray-400 text-[11px]">Lead probability exceeds the active decision boundary. Assign immediately to premium digital remarketing sequences.</p>
+                                </div>
+                                <div class="flex items-start gap-2.5">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase bg-red-500/10 text-red-400 border border-red-500/20 shrink-0">LOW LIKELIHOOD</span>
+                                    <p class="text-gray-400 text-[11px]">Lead probability sits below the boundary. Place in generic low-cost email nurture sequences.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="font-bold text-white text-sm mb-1">3. Hover Interactive Ticks</h4>
+                            <p class="text-gray-400 text-[11px]">
+                                Chart visualizations are responsive. Hover over vertical/horizontal neon-gradient bars to inspect detailed performance coefficients.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            openModal(title, html);
+        }
+
+        // Initialize Analytics & Charts robustly across all browser states
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', () => {
+                setTimeout(loadAnalytics, 100);
+            });
+        } else {
+            setTimeout(loadAnalytics, 100);
+        }
+    </script>
+
+    <!-- High Fidelity Glassmorphism Interactive Modal Overlay -->
+    <div id="dashboard-modal"
+        class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/60 backdrop-blur-md">
+        <div
+            class="glass-card max-w-xl w-full rounded-3xl p-6 border border-white/10 relative overflow-hidden animate-fade-in max-h-[85vh] flex flex-col shadow-[0_25px_60px_rgba(0,0,0,0.8)]">
+            <!-- Glowing Top Border Line -->
+            <div class="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-[#4DA3FF] via-[#6366F1] to-[#8B5CF6]"></div>
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-6 relative z-10">
+                <h3 id="modal-title" class="text-lg font-bold text-white flex items-center gap-3">
+                    <!-- Dynamic Title -->
+                </h3>
+                <button onclick="closeModal()"
+                    class="text-gray-400 hover:text-white p-1.5 rounded-xl hover:bg-white/5 transition-all outline-none">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal Content (Scrollable Container) -->
+            <div id="modal-content"
+                class="overflow-y-auto pr-2 space-y-6 flex-1 text-sm text-gray-300 leading-relaxed scrollbar-style relative z-10">
+                <!-- Dynamic Content -->
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

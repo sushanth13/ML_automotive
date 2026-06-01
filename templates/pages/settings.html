@@ -1,0 +1,85 @@
+{% extends "detail_base.html" %}
+
+{% block content %}
+<section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Configuration view</span>
+                    <h1>Classifier Settings and Threshold Overview</h1>
+                    <p>
+                        This page keeps the administrative settings visible as a readable full screen reference,
+                        while still showing that runtime changes are intentionally locked down.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/guide">Open usage guide</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Access state</h3>
+                    <div class="hero-card-value">Locked</div>
+                    <p class="hero-card-copy">
+                        Configuration controls are displayed for transparency, but editing is restricted to preserve model integrity.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid two">
+            <section class="panel">
+                <div class="panel-title">
+                    <h2>Runtime configuration</h2>
+                    <span class="chip warning">Read only</span>
+                </div>
+                <div class="form-panel">
+                    <div class="form-row">
+                        <label for="active-pipeline">Active scoring pipeline</label>
+                        <select id="active-pipeline" disabled>
+                            <option>Gradient Boosting Classifier - Champion</option>
+                            <option>Random Forest Classifier - Challenger</option>
+                            <option>Logistic Regression Classifier - Baseline</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="decision-threshold">Classification threshold</label>
+                        <input id="decision-threshold" type="text" value="0.50 - Optimal F1 balance" disabled>
+                    </div>
+                    <div class="form-row">
+                        <label for="primary-metric">Primary operating metric</label>
+                        <input id="primary-metric" type="text" value="F1-score with ROC-AUC review" disabled>
+                    </div>
+                </div>
+            </section>
+
+            <section class="panel">
+                <div class="panel-title">
+                    <h2>Why editing is restricted</h2>
+                </div>
+                <div class="list-grid">
+                    <div class="list-row">
+                        <div>
+                            <strong>Prediction integrity</strong>
+                            <span>Changing thresholds casually can distort the behavior expected by the business team.</span>
+                        </div>
+                    </div>
+                    <div class="list-row">
+                        <div>
+                            <strong>Feature drift protection</strong>
+                            <span>Locked defaults prevent ad hoc edits from diverging from trained data assumptions.</span>
+                        </div>
+                    </div>
+                    <div class="list-row">
+                        <div>
+                            <strong>Governance</strong>
+                            <span>Model operating choices should be updated through a controlled release rather than directly in the UI.</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page settings reference with the same locked controls, but easier to read.
+        </div>
+{% endblock %}

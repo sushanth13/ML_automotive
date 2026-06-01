@@ -1,0 +1,103 @@
+{% extends "detail_base.html" %}
+
+{% block content %}
+<section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Decision support</span>
+                    <h1>Lead Conversion Insights and Operating Rules</h1>
+                    <p>
+                        The old insight popup now lives on its own page so sales and marketing teams can read the
+                        guidance clearly during planning sessions and stakeholder reviews.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/guide">Open user guide</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Core finding</h3>
+                    <div class="hero-card-value">45%</div>
+                    <p class="hero-card-copy">
+                        EV and hybrid-oriented shoppers move through the funnel faster when intent and engagement signals both trend high.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="insight-grid">
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Engagement recency wins</h3>
+                    <p>
+                        Leads touched within roughly five days retain much stronger conversion potential.
+                        Recency should remain one of the first fields reviewed before allocating premium sales effort.
+                    </p>
+                </article>
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Intent score above 80</h3>
+                    <p>
+                        High-intent shoppers are better candidates for direct follow-up, higher-touch CRM routing,
+                        and offer sequencing that assumes near-term readiness.
+                    </p>
+                </article>
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Creative matching matters</h3>
+                    <p>
+                        Regional and multicultural creative alignment can improve response quality, especially in large
+                        metro markets where audience fit affects campaign efficiency.
+                    </p>
+                </article>
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Protect outreach budgets</h3>
+                    <p>
+                        Use the classifier as a prioritization tool. Better ranking quality means expensive outreach
+                        can stay focused on leads most likely to respond.
+                    </p>
+                </article>
+            </section>
+
+            <section class="section-grid two">
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Recommended operating rhythm</h2>
+                    </div>
+                    <div class="step-grid">
+                        <div class="step-card">
+                            <h3>1. Score daily</h3>
+                            <p>Run fresh leads through the dashboard as soon as campaign and CRM events are updated.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>2. Escalate high intent</h3>
+                            <p>Route high-scoring leads into fast-response workflows instead of pooled nurture queues.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>3. Watch stale leads</h3>
+                            <p>Increase urgency once recency drifts, or accept that predicted conversion probability will soften.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>4. Re-check monthly</h3>
+                            <p>Use the analytics pages to review whether model quality or market pressure assumptions changed.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="note">
+                    <strong>Business takeaway</strong>
+                    <p>
+                        This system works best when teams use it as a ranking and prioritization layer, not as a fully
+                        autonomous decision engine. Pair the model score with campaign context and dealer follow-up capacity.
+                    </p>
+                </article>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page strategy view for conversion guidance and action rules.
+        </div>
+{% endblock %}

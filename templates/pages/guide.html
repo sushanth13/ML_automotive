@@ -1,0 +1,85 @@
+{% extends "detail_base.html" %}
+
+{% block content %}
+<section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Operating guide</span>
+                    <h1>How to use the predictor and read the output</h1>
+                    <p>
+                        This guide replaces the help popup with a proper full-page reference for demos, onboarding,
+                        and everyday usage.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/insights">See action rules</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Best use case</h3>
+                    <div class="hero-card-value">Prioritize</div>
+                    <p class="hero-card-copy">
+                        Treat the score as a prioritization aid for lead routing and follow-up urgency.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="step-grid">
+                <article class="step-card">
+                    <h3>1. Enter the lead details</h3>
+                    <p>Choose a vehicle segment, shopper intent band, powertrain type, engagement recency, and intent score.</p>
+                </article>
+                <article class="step-card">
+                    <h3>2. Run the prediction</h3>
+                    <p>Click Analyze Lead to send the form payload to the FastAPI prediction endpoint.</p>
+                </article>
+                <article class="step-card">
+                    <h3>3. Read probability and badge</h3>
+                    <p>The probability shows the model confidence, while the badge gives a quick high or low likelihood summary.</p>
+                </article>
+                <article class="step-card">
+                    <h3>4. Use analytics pages</h3>
+                    <p>Open the separate analytics and insight pages whenever you need more context behind the score.</p>
+                </article>
+            </section>
+
+            <section class="section-grid two">
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Output interpretation</h2>
+                    </div>
+                    <div class="list-grid">
+                        <div class="list-row">
+                            <div>
+                                <strong>High likelihood</strong>
+                                <span>Good candidate for rapid follow-up, richer offers, and stronger human attention.</span>
+                            </div>
+                            <span class="chip success">Prioritize</span>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <strong>Low likelihood</strong>
+                                <span>Better suited to lower-cost nurture sequences until intent and recency improve.</span>
+                            </div>
+                            <span class="chip danger">Nurture</span>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="note">
+                    <strong>Practical reminder</strong>
+                    <p>
+                        A model score is strongest when paired with business context. Dealer availability, campaign goals,
+                        inventory realities, and timing should still shape the final outreach decision.
+                    </p>
+                </article>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page usage guide for prediction flow and result interpretation.
+        </div>
+{% endblock %}

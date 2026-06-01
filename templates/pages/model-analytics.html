@@ -1,0 +1,122 @@
+{% extends "detail_base.html" %}
+
+{% block content %}
+<section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Full analytics page</span>
+                    <h1>Model Comparative Analytics Leaderboard</h1>
+                    <p>
+                        This view replaces the old popup with a full-width page so the comparison table,
+                        champion model callout, and scoring notes are easier to read during demos and analysis.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/features">Review feature inputs</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Champion model</h3>
+                    <div id="champion-model-name" class="hero-card-value">Loading...</div>
+                    <p id="champion-model-copy" class="hero-card-copy">
+                        Pulling live model comparison metrics from the FastAPI analytics endpoint.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="stats-grid">
+                <article class="stat-card">
+                    <h3>Best accuracy</h3>
+                    <div id="best-accuracy" class="stat-value">--</div>
+                    <p class="stat-copy">Highest accuracy score returned in the current comparison set.</p>
+                </article>
+                <article class="stat-card">
+                    <h3>Champion F1-score</h3>
+                    <div id="best-f1" class="stat-value">--</div>
+                    <p class="stat-copy">The active model is optimized for balanced precision and recall.</p>
+                </article>
+                <article class="stat-card">
+                    <h3>Best ROC-AUC</h3>
+                    <div id="best-roc-auc" class="stat-value">--</div>
+                    <p class="stat-copy">Measures ranking quality between positive and negative lead outcomes.</p>
+                </article>
+            </section>
+
+            <section class="panel">
+                <div class="panel-title">
+                    <h2>Live comparison table</h2>
+                    <span id="analytics-status" class="chip">Loading metrics</span>
+                </div>
+                <p class="muted">
+                    The champion row is highlighted below. Values are loaded directly from
+                    <span class="mono">/api/analytics</span> so this page stays aligned with the dataset and scoring files used by the dashboard.
+                </p>
+                <div class="table-wrap" style="margin-top:20px;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Classifier model</th>
+                                <th>Accuracy</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>F1-score</th>
+                                <th>ROC-AUC</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analytics-table-body">
+                            <tr>
+                                <td colspan="6">Loading model metrics...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section-grid two">
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Top feature signals</h2>
+                    </div>
+                    <p class="muted">
+                        These are the strongest features currently coming back from the feature importance export.
+                    </p>
+                    <div id="top-feature-pills" class="pill-list">
+                        <span class="pill">Loading...</span>
+                    </div>
+                </article>
+
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>How to read this page</h2>
+                    </div>
+                    <div class="list-grid">
+                        <div class="list-row">
+                            <div>
+                                <strong>ROC-AUC</strong>
+                                <span>Higher scores indicate stronger ranking power across buyer and non-buyer classes.</span>
+                            </div>
+                            <span class="chip">Ranking metric</span>
+                        </div>
+                        <div class="list-row">
+                            <div>
+                                <strong>F1-score</strong>
+                                <span>Useful when you want a balanced signal across precision and recall for outreach decisions.</span>
+                            </div>
+                            <span class="chip success">Operational metric</span>
+                        </div>
+                    </div>
+                </article>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page analytics view for easier reading and side-by-side discussion.
+        </div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="/static/model-analytics.js"></script>
+{% endblock %}

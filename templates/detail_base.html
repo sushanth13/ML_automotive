@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }} | Automotive AI Conversion Predictor</title>
+    <!-- Apply saved theme BEFORE stylesheets render to avoid flash of wrong theme -->
+    <script>
+        (function () {
+            if (localStorage.getItem('theme') === 'light') {
+                document.documentElement.classList.add('light-theme-loading');
+                document.addEventListener('DOMContentLoaded', function () {
+                    document.body.classList.add('light-theme');
+                    document.documentElement.classList.remove('light-theme-loading');
+                    var ball = document.getElementById('theme-ball');
+                    if (ball) ball.style.transform = 'translateX(24px)';
+                });
+            }
+        })();
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/static/detail-pages.css">
+</head>
+
+<body class="text-gray-100 min-h-screen relative antialiased">
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-blue-500/10 blur-[130px] animate-pulse-slow">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-purple-500/10 blur-[130px] animate-pulse-slow"
+            style="animation-delay: 3s;"></div>
+        <div class="absolute top-[40%] right-[15%] w-[35%] h-[35%] rounded-full bg-indigo-500/5 blur-[110px] animate-pulse-slow"
+            style="animation-delay: 6s;"></div>
+    </div>
+
+    <aside
+        class="fixed left-4 top-4 bottom-4 w-64 bg-[#080d24]/50 border border-white/5 backdrop-blur-2xl rounded-3xl hidden lg:flex flex-col py-6 px-4 shadow-[0_8px_32px_rgba(0,0,0,0.5)] z-50">
+        <a href="/" class="flex items-center gap-3 px-2 pb-4">
+            <span
+                class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center shadow-[0_0_15px_rgba(77,163,255,0.4)] shrink-0">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M21 16V10a2 2 0 00-2-2h-3l-2-3H9L7 8H6v8"></path>
+                </svg>
+            </span>
+            <span class="min-w-0">
+                <span class="block text-white font-heading font-bold text-base leading-tight">Automotive AI</span>
+                <span class="block text-xs text-gray-400 mt-1">Conversion Predictor</span>
+            </span>
+        </a>
+
+        <div class="flex flex-col gap-3 mt-2">
+            <a href="/"
+                class="w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300">
+                <span class="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Dashboard</span>
+            </a>
+            <a href="/insights"
+                class="{% if active_page == 'insights' %}w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300{% else %}w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300{% endif %}">
+                <span class="{% if active_page == 'insights' %}w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0{% else %}w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0{% endif %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Insights</span>
+            </a>
+            <a href="/model-analytics"
+                class="{% if active_page == 'analytics' %}w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300{% else %}w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300{% endif %}">
+                <span class="{% if active_page == 'analytics' %}w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0{% else %}w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0{% endif %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Analytics</span>
+            </a>
+            <a href="/features"
+                class="{% if active_page == 'features' %}w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300{% else %}w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300{% endif %}">
+                <span class="{% if active_page == 'features' %}w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0{% else %}w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0{% endif %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Features</span>
+            </a>
+            <a href="/audience"
+                class="{% if active_page == 'audience' %}w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300{% else %}w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300{% endif %}">
+                <span class="{% if active_page == 'audience' %}w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0{% else %}w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0{% endif %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Audience</span>
+            </a>
+            <a href="/conquest-targets"
+                class="{% if active_page == 'targets' %}w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300{% else %}w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300{% endif %}">
+                <span class="{% if active_page == 'targets' %}w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0{% else %}w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0{% endif %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Targets</span>
+            </a>
+
+            <a href="/guide"
+                class="{% if active_page == 'guide' %}w-full h-12 px-3 rounded-2xl bg-gradient-to-tr from-blue-500/20 to-indigo-500/20 border border-blue-500/30 flex items-center gap-3 text-[#4DA3FF] shadow-[0_0_15px_rgba(77,163,255,0.2)] transition-all duration-300{% else %}w-full h-12 px-3 rounded-2xl border border-transparent hover:border-white/10 hover:bg-white/5 flex items-center gap-3 text-gray-400 hover:text-white transition-all duration-300{% endif %}">
+                <span class="{% if active_page == 'guide' %}w-10 h-10 rounded-xl bg-[#4DA3FF]/10 border border-[#4DA3FF]/20 flex items-center justify-center shrink-0{% else %}w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center shrink-0{% endif %}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z">
+                        </path>
+                    </svg>
+                </span>
+                <span class="text-sm font-semibold">Guide</span>
+            </a>
+        </div>
+
+        <div class="mt-auto flex items-center gap-3 px-3 pt-5">
+            <div
+                class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 relative shadow-[0_0_15px_rgba(255,255,255,0.02)] shrink-0">
+                <svg class="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z">
+                    </path>
+                </svg>
+                <span
+                    class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-green-400 border-2 border-[#050816] animate-pulse"></span>
+            </div>
+            <div class="min-w-0">
+                <span class="block text-sm font-semibold text-white">System online</span>
+                <span class="block text-xs text-gray-400 mt-1">Champion model active</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="lg:pl-80 min-h-screen flex flex-col justify-between py-8 px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="max-w-7xl mx-auto w-full">
+            <header class="relative flex flex-col items-center text-center mb-10 pb-6 border-b border-white/5 gap-4">
+                <div>
+                    <h1
+                        class="text-3xl sm:text-4xl font-extrabold tracking-tight text-white flex flex-col sm:flex-row items-center justify-center gap-2">
+                        <span>Automotive AI</span> <span class="gradient-text font-black">Conversion Predictor</span>
+                    </h1>
+                    <p class="text-gray-400 text-sm sm:text-base mt-2">Machine Learning powered insights for automotive
+                        sales teams.</p>
+                </div>
+
+                <div
+                    class="flex items-center justify-center md:absolute md:right-0 md:top-1/2 md:-translate-y-1/2 gap-3 mt-4 md:mt-0">
+                    <button onclick="window.location.href='{{ current_page_href }}'"
+                        class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-white/20 text-[#4DA3FF] text-sm font-semibold flex items-center gap-2 hover:bg-white/10 transition-all duration-300 shadow-[0_0_15px_rgba(77,163,255,0.1)]">
+                        <span class="w-2 h-2 rounded-full bg-[#22D3EE] animate-pulse"></span>
+                        {{ current_page_label }}
+                    </button>
+
+                    <div onclick="toggleTheme()"
+                        class="w-14 h-8 bg-[#0a0f2c] border border-white/10 rounded-full flex items-center p-1 cursor-pointer transition-all duration-300 relative shadow-inner">
+                        <div id="theme-ball"
+                            class="absolute left-1 w-6 h-6 rounded-full bg-gradient-to-tr from-[#4DA3FF] to-blue-600 flex items-center justify-center shadow-lg transition-transform duration-300">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05L5.75 4.34a1 1 0 10-1.41 1.414l.71.71zm-.707 7.07a1 1 0 001.414 1.414l.707-.707a1 1 0 00-1.414-1.414l-.707.707zM5 9a1 1 0 000 2h1a1 1 0 100-2H5z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="ml-auto pr-1 text-gray-500">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+
+    <script src="/static/detail-pages.js"></script>
+    {% block extra_scripts %}{% endblock %}
+</body>
+
+</html>

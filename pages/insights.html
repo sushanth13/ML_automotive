@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lead Insights | Automotive AI Conversion Predictor</title>
+    <link rel="stylesheet" href="/static/detail-pages.css">
+</head>
+
+<body>
+    <div class="page-shell">
+        <aside class="side-nav">
+            <a class="side-nav-brand" href="/">
+                <span class="side-nav-brand-mark"><svg width="30" height="30" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M21 16V10a2 2 0 00-2-2h-3l-2-3H9L7 8H6v8"></path></svg></span>
+                <span class="side-nav-brand-copy">
+                    <span class="side-nav-brand-title">Automotive AI</span>
+                    <span class="side-nav-brand-subtitle">Conversion Predictor</span>
+                </span>
+            </a>
+
+            <nav class="side-nav-links">
+                <a class="side-nav-link" href="/"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg></span><span class="side-nav-label">Dashboard</span></a>
+                <a class="side-nav-link active" href="/insights"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></span><span class="side-nav-label">Insights</span></a>
+                <a class="side-nav-link" href="/model-analytics"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg></span><span class="side-nav-label">Analytics</span></a>
+                <a class="side-nav-link" href="/features"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg></span><span class="side-nav-label">Features</span></a>
+                <a class="side-nav-link" href="/audience"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg></span><span class="side-nav-label">Audience</span></a>
+                <a class="side-nav-link" href="/conquest-targets"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg></span><span class="side-nav-label">Targets</span></a>
+
+                <a class="side-nav-link" href="/guide"><span class="side-nav-icon"><svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" /></svg></span><span class="side-nav-label">Guide</span></a>
+            </nav>
+
+            <div class="side-nav-footer">
+                <span class="side-nav-footer-badge"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" /></svg><span class="side-nav-footer-dot"></span></span>
+                <span class="side-nav-footer-copy"><strong>System online</strong><span>Champion model active</span></span>
+            </div>
+        </aside>
+
+        <div class="topbar">
+            <a class="brand" href="/">
+                <span class="brand-mark"><svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10M21 16V10a2 2 0 00-2-2h-3l-2-3H9L7 8H6v8"></path></svg></span>
+                <span>Automotive AI Conversion Predictor</span>
+            </a>
+
+            <nav class="nav-links">
+                <a class="nav-link" href="/">Dashboard</a>
+                <a class="nav-link active" href="/insights">Insights</a>
+                <a class="nav-link" href="/model-analytics">Analytics</a>
+                <a class="nav-link" href="/features">Features</a>
+                <a class="nav-link" href="/audience">Audience</a>
+                <a class="nav-link" href="/conquest-targets">Targets</a>
+
+                <a class="nav-link" href="/guide">Guide</a>
+            </nav>
+        </div>
+
+        <header class="page-app-header">
+            <div class="page-app-copy">
+                <h1 class="page-app-title">
+                    <span>Automotive AI</span> <span class="page-app-title-gradient">Conversion Predictor</span>
+                </h1>
+                <p class="page-app-subtitle">
+                    Machine Learning powered insights for automotive sales teams.
+                </p>
+            </div>
+            <div class="page-app-actions">
+                <span class="page-app-chip active"><span class="page-app-chip-dot"></span>Insights</span>
+                <button type="button" class="theme-toggle" onclick="toggleTheme()"><span id="theme-ball" class="theme-ball"><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.46 5.05L5.75 4.34a1 1 0 10-1.41 1.414l.71.71zm-.707 7.07a1 1 0 001.414 1.414l.707-.707a1 1 0 00-1.414-1.414l-.707.707zM5 9a1 1 0 000 2h1a1 1 0 100-2H5z"></path></svg></span><span class="theme-moon"><svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg></span></button>
+            </div>
+        </header>
+        <div class="page-app-divider"></div>
+
+        <section class="hero">
+            <div class="hero-grid">
+                <div>
+                    <span class="hero-eyebrow">Decision support</span>
+                    <h1>Lead Conversion Insights and Operating Rules</h1>
+                    <p>
+                        The old insight popup now lives on its own page so sales and marketing teams can read the
+                        guidance clearly during planning sessions and stakeholder reviews.
+                    </p>
+                    <div class="hero-actions">
+                        <a class="button-link" href="/">Back to dashboard</a>
+                        <a class="button-secondary" href="/guide">Open user guide</a>
+                    </div>
+                </div>
+
+                <aside class="hero-card">
+                    <h3>Core finding</h3>
+                    <div class="hero-card-value">45%</div>
+                    <p class="hero-card-copy">
+                        EV and hybrid-oriented shoppers move through the funnel faster when intent and engagement signals both trend high.
+                    </p>
+                </aside>
+            </div>
+        </section>
+
+        <div class="section-grid">
+            <section class="insight-grid">
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Engagement recency wins</h3>
+                    <p>
+                        Leads touched within roughly five days retain much stronger conversion potential.
+                        Recency should remain one of the first fields reviewed before allocating premium sales effort.
+                    </p>
+                </article>
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Intent score above 80</h3>
+                    <p>
+                        High-intent shoppers are better candidates for direct follow-up, higher-touch CRM routing,
+                        and offer sequencing that assumes near-term readiness.
+                    </p>
+                </article>
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Creative matching matters</h3>
+                    <p>
+                        Regional and multicultural creative alignment can improve response quality, especially in large
+                        metro markets where audience fit affects campaign efficiency.
+                    </p>
+                </article>
+                <article class="insight-card panel">
+                    <div class="accent-line"></div>
+                    <h3>Protect outreach budgets</h3>
+                    <p>
+                        Use the classifier as a prioritization tool. Better ranking quality means expensive outreach
+                        can stay focused on leads most likely to respond.
+                    </p>
+                </article>
+            </section>
+
+            <section class="section-grid two">
+                <article class="panel">
+                    <div class="panel-title">
+                        <h2>Recommended operating rhythm</h2>
+                    </div>
+                    <div class="step-grid">
+                        <div class="step-card">
+                            <h3>1. Score daily</h3>
+                            <p>Run fresh leads through the dashboard as soon as campaign and CRM events are updated.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>2. Escalate high intent</h3>
+                            <p>Route high-scoring leads into fast-response workflows instead of pooled nurture queues.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>3. Watch stale leads</h3>
+                            <p>Increase urgency once recency drifts, or accept that predicted conversion probability will soften.</p>
+                        </div>
+                        <div class="step-card">
+                            <h3>4. Re-check monthly</h3>
+                            <p>Use the analytics pages to review whether model quality or market pressure assumptions changed.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="note">
+                    <strong>Business takeaway</strong>
+                    <p>
+                        This system works best when teams use it as a ranking and prioritization layer, not as a fully
+                        autonomous decision engine. Pair the model score with campaign context and dealer follow-up capacity.
+                    </p>
+                </article>
+            </section>
+        </div>
+
+        <div class="page-footer">
+            Full-page strategy view for conversion guidance and action rules.
+        </div>
+    </div>
+    <script src="/static/detail-pages.js"></script>
+</body>
+
+</html>
