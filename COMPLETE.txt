@@ -1,2 +1,0 @@
-ALL TASKS COMPLETE.
-The web application is ready to run.

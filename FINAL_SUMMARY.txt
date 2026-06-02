@@ -1,5 +1,0 @@
-FINAL SUMMARY
-
-The conversion of the Jupyter Notebook to a Web Application has been completed successfully.
-
-All required files, models, backend API (FastAPI), and frontend user interface have been integrated and are operational.
