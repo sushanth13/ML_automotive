@@ -10,11 +10,13 @@ from pathlib import Path
 
 app = FastAPI(title="Automotive Lead Conversion API")
 
-# Resolve all project files relative to this app module.
+
 BASE_DIR = Path(__file__).resolve().parent
 STATIC_DIR = BASE_DIR / "static"
 TEMPLATES_DIR = BASE_DIR / "templates"
 MODEL_PATH = BASE_DIR / "champion_model.pkl"
+FEATURE_IMPORTANCE_PATH = BASE_DIR / "feature_importance.csv"
+MODEL_RESULTS_PATH = BASE_DIR / "model_results.csv"
 
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=str(TEMPLATES_DIR))
@@ -44,7 +46,7 @@ def detail_page_response(
     )
 
 
-# Load model
+
 model = None
 if MODEL_PATH.exists():
     model = joblib.load(MODEL_PATH)
@@ -161,10 +163,10 @@ async def predict_conversion(lead: LeadFeatures):
         raise HTTPException(status_code=500, detail="Model not loaded")
     
     try:
-        # Convert input data to DataFrame
+
         df = pd.DataFrame([lead.dict()])
         
-        # Ensure correct column order
+
         expected_columns = [
             'vehicle_segment', 'model_year_position', 'powertrain_focus',
             'primary_channel', 'secondary_channel_syndicated_flag',
@@ -182,11 +184,10 @@ async def predict_conversion(lead: LeadFeatures):
         
         df = df[expected_columns]
         
-        # The ML model expects intent_engagement_score in the range 0.0-1.0,
-        # but the UI sends it as a percentage (0-100).
+
         df['intent_engagement_score'] = df['intent_engagement_score'] / 100.0
         
-        # Predict probability
+
         probability = model.predict_proba(df)[0][1]
         prediction = model.predict(df)[0]
         
@@ -203,10 +204,10 @@ async def get_analytics():
         results_df = pd.read_csv(BASE_DIR / "model_results.csv")
         feature_importance_df = pd.read_csv(BASE_DIR / "feature_importance.csv")
         
-        # Parse CSVs
+
         results = results_df.to_dict('records')
         
-        # For feature importance, assume columns Feature, Importance
+
         feature_importance_df.columns = ['Feature', 'Importance']
         features = feature_importance_df.sort_values(by='Importance', ascending=False).head(10).to_dict('records')
         

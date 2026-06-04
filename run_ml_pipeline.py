@@ -6,8 +6,7 @@ import joblib
 def main():
     print("Starting ML Pipeline for Automotive Lead Conversion...")
     
-    # Normally we would load data and train the model here
-    # df = pd.read_csv('1778828549471_auto_marketing_01 1.csv')
+
     
     print("Loading pre-trained champion model...")
     model_path = 'champion_model.pkl'
@@ -15,7 +14,7 @@ def main():
         model = joblib.load(model_path)
         print(f"Model loaded successfully. Type: {type(model)}")
         
-        # Verify it has predict method
+
         if hasattr(model, 'predict'):
             print("Pipeline verification passed.")
             
